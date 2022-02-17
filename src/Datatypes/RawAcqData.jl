@@ -26,7 +26,8 @@ Base.@kwdef mutable struct AcquisitionHeader
   scan_counter::UInt32 = 0
   acquisition_time_stamp::UInt32 = 0
   physiology_time_stamp::NTuple{3,UInt32} = ntuple(i->UInt32(0),3)
-  number_of_samples::UInt16 = 0
+  # AMM: ... UInt16 -> UInt32
+  number_of_samples::UInt32 = 0
   available_channels::UInt16 = 0
   active_channels::UInt16 = 0
   channel_mask::NTuple{16,UInt64} = ntuple(i->UInt64(0),16)
@@ -315,7 +316,8 @@ function AcquisitionHeader(acqData::AcquisitionData, rep::Int, slice::Int, slice
                         , user )
 
   return AcquisitionHeader(; scan_counter=Int32(counter)
-                          , number_of_samples=Int16(numSamples)
+                          # AMM: ... Int16 -> Int32
+                          , number_of_samples=Int32(numSamples)
                           , available_channels=Int16(numChan)
                           , active_channels=Int16(numChan)
                           , center_sample=Int16(center_sample)

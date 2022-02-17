@@ -151,13 +151,14 @@ are reconstructed independently.
 * (`normalize::Bool=false`)             - adjust regularization parameter according to the size of k-space data
 * (`params::Dict{Symbol,Any}`)          - Dict with additional parameters
 """
+# AMM: ... senseMaps::Array{Complex{T}} -> senseMaps::Array{ComplexF64, 4}
 function reconstruction_multiCoil(acqData::AcquisitionData{T}
                               , reconSize::NTuple{D,Int64}
                               , reg::Vector{Regularization}
                               , sparseTrafo::Trafo
                               , weights::Vector{Vector{Complex{T}}}
                               , solvername::String
-                              , senseMaps::Array{Complex{T}}
+                              , senseMaps::Array{ComplexF64, 4}
                               , normalize::Bool=false
                               , encodingOps=nothing
                               , params::Dict{Symbol,Any}=Dict{Symbol,Any}()) where {D , T}
