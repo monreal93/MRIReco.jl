@@ -4,7 +4,7 @@ mutable struct InhomogeneityData{T}
   A_k::Matrix{Complex{T}}
   C_k::Matrix{Complex{T}}
   times::Vector{T}
-  Cmap::Matrix{Complex{T}}
+  Cmap::Matrix{Complex{T},D}
   t_hat::T
   z_hat::Complex{T}
   method::String
