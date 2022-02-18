@@ -135,9 +135,10 @@ function produ(x::Vector{T}, numOfNodes::Int, numOfPixel::Int, shape::Tuple, pla
   K = size(cparam.A_k,2)
   s = zeros(T,numOfNodes)
 
-  if shutter
-    circularShutter!(reshape(x, shape), 1.0)
-  end
+    # AMM: Commenting this because it expects a Matrix, so doesn't work for 3D
+  # if shutter
+  #   circularShutter!(reshape(x, shape), 1.0)
+  # end
 
   # Preprocessing step when time and correctionMap are centered
   if cparam.method == "nfft"
@@ -197,9 +198,10 @@ function ctprodu(x::Vector{Complex{T}}, shape::Tuple, plan, idx::Vector{Vector{I
     y .*=  conj(exp.(-vec(cparam.Cmap) * cparam.t_hat))
   end
 
-  if shutter
-    circularShutter!(reshape(y, shape), 1.0)
-  end
+  # AMM: Commenting this because it expects a Matrix, so doesn't work for 3D
+  # if shutter
+  #   circularShutter!(reshape(y, shape), 1.0)
+  # end
 
   return y
 end
