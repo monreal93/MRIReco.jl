@@ -115,10 +115,6 @@ function Base.copy(S::FieldmapNFFTOp{T,Nothing,Function,D}) where {T,D}
 
   cparam = deepcopy(S.cparam)
 
-  print(typeof(cparam))
-  # cparam = convert(InhomogeneityData{Float64},cparam)
-  # print(typeof(cparam))
-
   mul!(res, x::Vector{T}) where T =
      (res .= produ(x,S.nrow,S.ncol,S.shape,plans,idx,cparam,S.circTraj,d))
   ctmul!(res, y::Vector{T}) where T =
