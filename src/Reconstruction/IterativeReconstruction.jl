@@ -151,14 +151,13 @@ are reconstructed independently.
 * (`normalize::Bool=false`)             - adjust regularization parameter according to the size of k-space data
 * (`params::Dict{Symbol,Any}`)          - Dict with additional parameters
 """
-# AMM: ... senseMaps::Array{Complex{T}} -> senseMaps::Array{ComplexF64, 4}
 function reconstruction_multiCoil(acqData::AcquisitionData{T}
                               , reconSize::NTuple{D,Int64}
                               , reg::Vector{Regularization}
                               , sparseTrafo::Trafo
                               , weights::Vector{Vector{Complex{T}}}
                               , solvername::String
-                              , senseMaps::Array{ComplexF64, 4}
+                              , senseMaps::Array{Complex{T}}
                               , normalize::Bool=false
                               , encodingOps=nothing
                               , params::Dict{Symbol,Any}=Dict{Symbol,Any}()) where {D , T}
@@ -173,7 +172,6 @@ function reconstruction_multiCoil(acqData::AcquisitionData{T}
 
   # set sparse trafo in reg
   reg[1].params[:sparseTrafo] = sparseTrafo
-
   # solve optimization problem
   Ireco = zeros(Complex{T}, prod(reconSize), numSl, numContr, 1)
   @sync for k = 1:numSl
@@ -191,10 +189,10 @@ function reconstruction_multiCoil(acqData::AcquisitionData{T}
         EFull = ∘(W, E[j], isWeighting=true)
         solver = createLinearSolver(solvername, EFull; reg=reg, params...)
         I = solve(solver, kdata; params...)
-
-        if isCircular( trajectory(acqData, j) )
-          circularShutter!(reshape(I, reconSize), 1.0)
-        end
+        # AMM: commenting this part since circularShutter is expecting a matrix
+        # if isCircular( trajectory(acqData, j) )
+        #   circularShutter!(reshape(I, reconSize), 1.0)
+        # end
         Ireco[:,k,j] = I
       end
     end

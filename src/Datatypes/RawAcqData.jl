@@ -26,7 +26,7 @@ Base.@kwdef mutable struct AcquisitionHeader
   scan_counter::UInt32 = 0
   acquisition_time_stamp::UInt32 = 0
   physiology_time_stamp::NTuple{3,UInt32} = ntuple(i->UInt32(0),3)
-  # AMM: ... UInt16 -> UInt32
+  # AMM: ... UInt16 = 0 -> UInt32 = 0
   number_of_samples::UInt32 = 0
   available_channels::UInt16 = 0
   active_channels::UInt16 = 0
@@ -79,11 +79,11 @@ function trajectory(f::RawAcquisitionData; slice::Int=1, contrast::Int=1)
   if lowercase(name) == "cartesian"
     dim = ( maximum(encSteps2(f))==1 ? 2 : 3)
     if dim==3
-      tr = trajectory("Cartesian3D", f.params["encodedSize"][2],
+      tr = trajectory(Float32, "Cartesian3D", f.params["encodedSize"][2],
                                      f.params["encodedSize"][1],
                                      numSlices=f.params["encodedSize"][3])
     else
-      tr = trajectory("Cartesian", f.params["encodedSize"][2],
+      tr = trajectory(Float32, "Cartesian", f.params["encodedSize"][2],
                                    f.params["encodedSize"][1])
     end
   else
@@ -121,7 +121,7 @@ function trajectory(f::RawAcquisitionData; slice::Int=1, contrast::Int=1)
 
     traj_ = reshape(traj[:,:,:,:,1,1], D, :)
     # tr = Trajectory(traj_, size(traj_,3), size(traj_,2), circular=true)
-    tr = Trajectory(traj_, size(traj_,3), size(traj_,2), circular=true, times=vec(times[:,:,:,1,1]))
+    tr = Trajectory(traj_, size(traj,3), size(traj,2), circular=true, times=vec(times[:,:,:,1,1]))
   end
   return tr
 end
@@ -316,7 +316,7 @@ function AcquisitionHeader(acqData::AcquisitionData, rep::Int, slice::Int, slice
                         , user )
 
   return AcquisitionHeader(; scan_counter=Int32(counter)
-                          # AMM: ... Int16 -> Int32
+  			 # AMM: ... UInt16(numSamples) -> UInt32(numSamples)
                           , number_of_samples=Int32(numSamples)
                           , available_channels=Int16(numChan)
                           , active_channels=Int16(numChan)

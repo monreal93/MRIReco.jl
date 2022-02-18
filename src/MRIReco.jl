@@ -23,6 +23,9 @@ using ThreadPools
 @reexport using Unitful
 import LowRankApprox.psvd
 
+# AMM:
+using Infiltrator
+
 const Trafo = Union{AbstractMatrix, AbstractLinearOperator, Nothing}
 
 include("Trajectories/Trajectories.jl")
