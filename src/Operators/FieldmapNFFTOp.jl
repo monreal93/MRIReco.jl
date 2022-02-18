@@ -1,10 +1,10 @@
 export FieldmapNFFTOp, InhomogeneityData, createInhomogeneityData_
 
-mutable struct InhomogeneityData{T}
+mutable struct InhomogeneityData{T,D}
   A_k::Matrix{Complex{T}}
   C_k::Matrix{Complex{T}}
   times::Vector{T}
-  Cmap::Matrix{Complex{T},D}
+  Cmap::Array{Complex{T},D}
   t_hat::T
   z_hat::Complex{T}
   method::String
