@@ -70,7 +70,9 @@ function FieldmapNFFTOp(shape::NTuple{D,Int64}, tr::Trajectory,
                         step::Int64=10,
                         kargs...) where {T,D}
 
-  nodes,times = kspaceNodes(tr), readoutTimes(tr)
+  # AMM: ... kspacenodes(tr) -> CuArray(kspaceNodes(tr)) 
+  nodes,times = CuArray(kspaceNodes(tr)), readoutTimes(tr)
+  print(typeof(nodes))
   if echoImage
     times = times .- echoTime(tr)
   end
