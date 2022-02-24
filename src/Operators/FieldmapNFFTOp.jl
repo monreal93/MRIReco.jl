@@ -71,8 +71,8 @@ function FieldmapNFFTOp(shape::NTuple{D,Int64}, tr::Trajectory,
                         kargs...) where {T,D}
 
   # AMM: ... kspacenodes(tr) -> CuArray(kspaceNodes(tr)) 
-  nodes,times = CuArray(kspaceNodes(tr)), readoutTimes(tr)
-  print(typeof(nodes))
+  # nodes,times = CuArray(kspaceNodes(tr)), readoutTimes(tr)
+  nodes,times = kspaceNodes(tr), readoutTimes(tr)
   if echoImage
     times = times .- echoTime(tr)
   end
@@ -90,6 +90,8 @@ function FieldmapNFFTOp(shape::NTuple{D,Int64}, tr::Trajectory,
   for κ=1:K
     idx[κ] = findall(x->x!=0.0, cparam.A_k[:,κ])
     plans[κ] = plan_nfft(nodes[:,idx[κ]], shape, m=3, σ=1.25, precompute = NFFT.FULL)
+    # AMM: Trying in the GPU
+    # plans[κ] = plan_nfft(typeof(tr),nodes[:,idx[κ]], shape, m=3, σ=1.25, precompute = NFFT.FULL)
   end
 
   d = [zeros(ComplexF64, length(idx[κ])) for κ=1:K ]

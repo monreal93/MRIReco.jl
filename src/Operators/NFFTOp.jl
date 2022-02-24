@@ -35,9 +35,10 @@ generates a `NFFTOp` which evaluates the MRI Fourier signal encoding operator us
 """
 function NFFTOp(shape::Tuple, tr::AbstractMatrix{T}; toeplitz=false, oversamplingFactor=1.25, kernelSize=3, kargs...) where {T}
   # AMM : adding tr = CuArray(tr);
-  tr = CuArray(tr);
-  typeof(tr)
+  # tr = CuArray(tr);
   plan = plan_nfft(tr, shape, m=kernelSize, σ=oversamplingFactor, precompute=NFFT.FULL)
+  # AMM: This is if I want to run CuNFFT
+  # plan = plan_nfft(typeof(tr), tr, shape, m=kernelSize, σ=oversamplingFactor, precompute=NFFT.FULL)
 
   return NFFTOp{Complex{T}}(size(tr,2), prod(shape), false, false
             , (res,x) -> (res .= produ(plan,x))

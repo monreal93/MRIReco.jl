@@ -31,7 +31,8 @@ Wavelets = "29a6e085-ba6d-5f35-a997-948ac2efa89a"
 
 # AMM:
 Infiltrator = "5903a43b-9cc3-4c30-8d17-598619ec4e9b"
-# CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+CuNFFT = "a9291f20-7f4c-4d50-b30d-4e07b13252e1"
 
 [compat]
 Distributions = "0.21, 0.23, 0.25"

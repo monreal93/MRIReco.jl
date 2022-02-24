@@ -26,6 +26,7 @@ import LowRankApprox.psvd
 # AMM:
 using Infiltrator
 using CUDA
+using CuNFFT
 
 const Trafo = Union{AbstractMatrix, AbstractLinearOperator, Nothing}
 
